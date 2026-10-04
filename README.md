@@ -1,4 +1,4 @@
-# Taller Reproductor de Música
+# DFKMusic: Taller Reproductor de Música
 
 ## 1. Nombre del proyecto
 

@@ -14,7 +14,7 @@ export function Header({ search, onSearchChange }: HeaderProps) {
         <span className="brand__mark">
           <Icon name="note" size={20} />
         </span>
-        <span className="brand__name">Reproductor</span>
+        <span className="brand__name">DFKMusic</span>
       </div>
 
       <div className="search">

@@ -19,7 +19,7 @@ export function AuthLayout({ title, subtitle, footerText, footerLinkLabel, foote
           <span className="brand__mark">
             <Icon name="note" size={20} />
           </span>
-          <span className="brand__name">Reproductor</span>
+          <span className="brand__name">DFKMusic</span>
         </div>
         <h1 id="auth-title">{title}</h1>
         <p className="auth__subtitle">{subtitle}</p>
