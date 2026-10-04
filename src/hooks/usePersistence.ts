@@ -11,6 +11,8 @@ export function usePersistence(onSessionExpired: () => void): string | null {
   const [isLoaded, setIsLoaded] = useState(false);
   const [errorCode, setErrorCode] = useState<string | null>(null);
   const lastSaved = useRef('');
+  const sessionExpiredRef = useRef(onSessionExpired);
+  sessionExpiredRef.current = onSessionExpired;
 
   useEffect(() => {
     let cancelled = false;
@@ -24,13 +26,13 @@ export function usePersistence(onSessionExpired: () => void): string | null {
       })
       .catch((error: unknown) => {
         if (cancelled) return;
-        if (error instanceof ApiError && error.status === 401) onSessionExpired();
+        if (error instanceof ApiError && error.status === 401) sessionExpiredRef.current();
         else setErrorCode('STATE_LOAD_FAILED');
       });
     return () => {
       cancelled = true;
     };
-  }, [onSessionExpired]);
+  }, []);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -46,12 +48,12 @@ export function usePersistence(onSessionExpired: () => void): string | null {
           setErrorCode(null);
         })
         .catch((error: unknown) => {
-          if (error instanceof ApiError && error.status === 401) onSessionExpired();
+          if (error instanceof ApiError && error.status === 401) sessionExpiredRef.current();
           else setErrorCode('STATE_SAVE_FAILED');
         });
     }, SAVE_DELAY_MS);
     return () => window.clearTimeout(timer);
-  }, [state, isLoaded, onSessionExpired]);
+  }, [state, isLoaded]);
 
   return errorCode;
 }
