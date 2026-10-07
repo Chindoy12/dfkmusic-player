@@ -64,7 +64,7 @@ input[type='range'] { accent-color: var(--navy); width: 100%; }
 
 /* Brand */
 .brand { display: flex; align-items: center; gap: 0.6rem; }
-.brand__mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: var(--gold); }
+.brand__logo { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; flex: none; }
 .brand__name { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--navy); }
 
 /* App shell */
@@ -184,7 +184,7 @@ input[type='range'] { accent-color: var(--navy); width: 100%; }
 @media (max-width: 700px) {
   .app { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto; grid-template-areas: 'header' 'sidebar' 'main' 'player'; }
   .header { flex-wrap: wrap; gap: 0.5rem 0.75rem; padding: 0.6rem 0.9rem; }
-  .brand__name { display: none; }
+  .brand__name { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .search { order: 3; flex-basis: 100%; max-width: none; }
   .sidebar { flex-direction: row; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; border-right: 0; border-bottom: 1px solid var(--line); overflow-x: auto; overflow-y: hidden; }
   .nav { display: flex; gap: 0.25rem; }

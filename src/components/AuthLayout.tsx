@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { Icon } from './Icon';
+import { Brand } from './Brand';
 
 interface AuthLayoutProps {
   title: string;
@@ -15,12 +15,7 @@ export function AuthLayout({ title, subtitle, footerText, footerLinkLabel, foote
   return (
     <main className="auth">
       <section className="auth__card" aria-labelledby="auth-title">
-        <div className="brand">
-          <span className="brand__mark">
-            <Icon name="note" size={20} />
-          </span>
-          <span className="brand__name">DFKMusic</span>
-        </div>
+        <Brand />
         <h1 id="auth-title">{title}</h1>
         <p className="auth__subtitle">{subtitle}</p>
         {children}

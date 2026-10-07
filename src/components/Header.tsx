@@ -1,4 +1,5 @@
 import { useAuth } from './AuthProvider';
+import { Brand } from './Brand';
 import { Icon } from './Icon';
 
 interface HeaderProps {
@@ -10,12 +11,7 @@ export function Header({ search, onSearchChange }: HeaderProps) {
   const { user, logout } = useAuth();
   return (
     <header className="header">
-      <div className="brand">
-        <span className="brand__mark">
-          <Icon name="note" size={20} />
-        </span>
-        <span className="brand__name">DFKMusic</span>
-      </div>
+      <Brand />
 
       <div className="search">
         <Icon name="search" size={20} />
