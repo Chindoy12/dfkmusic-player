@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import type { PlayerState } from '../models/PlayerState';
 import type { Song } from '../models/Song';
 import { player } from '../hooks/usePlayer';
 import { formatTime } from '../utils/format';
 import { Cover } from './Cover';
 import { Icon } from './Icon';
+import { MoveSongForm } from './MoveSongForm';
 
 interface SongListProps {
   songs: Song[];
@@ -11,9 +13,11 @@ interface SongListProps {
   playlistId: string;
   removeLabel: string;
   onRemove: (song: Song) => void;
+  onMove?: (song: Song, position: number) => void;
 }
 
-export function SongList({ songs, state, playlistId, removeLabel, onRemove }: SongListProps) {
+export function SongList({ songs, state, playlistId, removeLabel, onRemove, onMove }: SongListProps) {
+  const [movingSongId, setMovingSongId] = useState<string | null>(null);
   const targetPlaylists = state.playlists.filter((playlist) => playlist.id !== playlistId);
 
   return (
@@ -23,12 +27,14 @@ export function SongList({ songs, state, playlistId, removeLabel, onRemove }: So
         <span>Duración</span>
         <span>Acciones</span>
       </li>
-      {songs.map((song) => {
+      {songs.map((song, index) => {
         const isCurrent = state.currentSong === song;
         const isFavorite = state.favorites.includes(song);
+        const isMoving = onMove !== undefined && movingSongId === song.id;
         return (
           <li key={song.id} className={`song-row${isCurrent ? ' song-row--current' : ''}`} aria-current={isCurrent ? 'true' : undefined}>
             <button type="button" className="song-row__main" aria-label={`Reproducir ${song.title}`} onClick={() => player.playSong(song, playlistId)}>
+              {onMove && <span className="song-row__index">{index + 1}</span>}
               <Cover song={song} size="small" />
               <span className="song-row__text">
                 <span className="song-row__title">{song.title}</span>
@@ -58,10 +64,25 @@ export function SongList({ songs, state, playlistId, removeLabel, onRemove }: So
                   ))}
                 </select>
               )}
+              {onMove && (
+                <button type="button" className="icon-button" aria-label={`Mover ${song.title} a otra posición`} aria-expanded={isMoving} onClick={() => setMovingSongId(isMoving ? null : song.id)}>
+                  <Icon name="move" size={20} />
+                </button>
+              )}
               <button type="button" className="icon-button icon-button--danger" aria-label={`${removeLabel} ${song.title}`} onClick={() => onRemove(song)}>
                 <Icon name="trash" size={20} />
               </button>
             </div>
+            {isMoving && (
+              <MoveSongForm
+                key={index}
+                title={song.title}
+                position={index + 1}
+                total={songs.length}
+                onMove={(position) => onMove(song, position)}
+                onClose={() => setMovingSongId(null)}
+              />
+            )}
           </li>
         );
       })}

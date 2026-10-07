@@ -123,6 +123,11 @@ input[type='range'] { accent-color: var(--navy); width: 100%; }
 .cover--small { width: 42px; height: 42px; }
 .cover--large { width: 56px; height: 56px; }
 
+.song-row__index { flex: none; width: 1.6rem; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+.song-row .move-form { grid-column: 1 / -1; }
+.move-form { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; padding: 0.6rem 0.5rem 0.4rem; border-top: 1px dashed #b9c0d0; }
+.move-form label { font-weight: 600; flex-basis: 100%; }
+
 /* Panels */
 .panel { max-width: 760px; }
 .panel__lead { color: var(--muted); margin: 0.5rem 0 1.25rem; }

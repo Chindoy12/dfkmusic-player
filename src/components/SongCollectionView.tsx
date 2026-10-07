@@ -28,6 +28,7 @@ export function SongCollectionView(props: SongCollectionViewProps) {
   const [draftName, setDraftName] = useState(title);
 
   const visibleSongs = songs.filter((song) => song.matches(search));
+  const canMove = isSortable && search.trim() === '';
   const totalDuration = songs.reduce((sum, song) => sum + song.duration, 0);
 
   function handleRename(event: FormEvent) {
@@ -86,7 +87,7 @@ export function SongCollectionView(props: SongCollectionViewProps) {
       ) : visibleSongs.length === 0 ? (
         <EmptyState title="Sin resultados" text={`Ninguna canción coincide con "${search}".`} />
       ) : (
-        <SongList songs={visibleSongs} state={state} playlistId={playlistId} removeLabel={props.removeLabel} onRemove={props.onRemove} />
+        <SongList songs={visibleSongs} state={state} playlistId={playlistId} removeLabel={props.removeLabel} onRemove={props.onRemove} onMove={canMove ? (song, position) => player.moveSong(playlistId, song, position - 1) : undefined} />
       )}
     </section>
   );
