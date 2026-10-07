@@ -54,15 +54,31 @@ export class DoublyLinkedList<T> implements Iterable<T> {
     if (index === 0) return this.addFirst(value);
     if (index === this.size) return this.addLast(value);
 
-    const following = this.getNode(index) as SongNode<T>;
-    const preceding = following.previous as SongNode<T>;
     const node = new SongNode(value);
-    node.previous = preceding;
-    node.next = following;
-    preceding.next = node;
-    following.previous = node;
-    this.size++;
+    this.linkBefore(this.getNode(index) as SongNode<T>, node);
     return node;
+  }
+
+  indexOf(target: SongNode<T>): number {
+    let index = 0;
+    for (const node of this.nodes()) {
+      if (node === target) return index;
+      index++;
+    }
+    return -1;
+  }
+
+  moveNode(node: SongNode<T>, targetIndex: number): boolean {
+    if (targetIndex < 0 || targetIndex >= this.size) throw new RangeError('INDEX_OUT_OF_RANGE');
+    const currentIndex = this.indexOf(node);
+    if (currentIndex === -1) return false;
+    if (currentIndex === targetIndex) return true;
+
+    this.unlink(node);
+    if (targetIndex === this.size) this.linkAfterTail(node);
+    else if (targetIndex === 0) this.linkBefore(this.head as SongNode<T>, node);
+    else this.linkBefore(this.getNode(targetIndex) as SongNode<T>, node);
+    return true;
   }
 
   getNode(index: number): SongNode<T> | null {
@@ -147,6 +163,25 @@ export class DoublyLinkedList<T> implements Iterable<T> {
 
   toReversedArray(): T[] {
     return Array.from(this.nodesBackward(), (node) => node.value);
+  }
+
+  private linkBefore(following: SongNode<T>, node: SongNode<T>): void {
+    const preceding = following.previous;
+    node.previous = preceding;
+    node.next = following;
+    following.previous = node;
+    if (preceding) preceding.next = node;
+    else this.head = node;
+    this.size++;
+  }
+
+  private linkAfterTail(node: SongNode<T>): void {
+    node.previous = this.tail;
+    node.next = null;
+    if (this.tail) this.tail.next = node;
+    else this.head = node;
+    this.tail = node;
+    this.size++;
   }
 
   private unlink(node: SongNode<T>): void {

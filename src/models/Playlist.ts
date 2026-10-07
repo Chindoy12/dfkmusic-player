@@ -44,6 +44,11 @@ export class Playlist {
     return this.songs.remove(song);
   }
 
+  moveSong(song: Song, targetIndex: number): boolean {
+    const node = this.songs.find((candidate) => candidate === song);
+    return node ? this.songs.moveNode(node, targetIndex) : false;
+  }
+
   select(song: Song): boolean {
     const node = this.songs.find((candidate) => candidate === song);
     if (!node) return false;

@@ -101,6 +101,14 @@ export class MusicPlayer {
     this.emit();
   }
 
+  moveSong(playlistId: string, song: Song, targetIndex: number): void {
+    const playlist = this.mediaLibrary.findPlaylist(playlistId);
+    if (!playlist) return;
+    const size = playlist.songs.getSize();
+    const clamped = Math.min(Math.max(targetIndex, 0), size - 1);
+    if (playlist.moveSong(song, clamped)) this.emit();
+  }
+
   createPlaylist(name: string): string {
     const playlist = this.mediaLibrary.createPlaylist(name);
     this.emit();

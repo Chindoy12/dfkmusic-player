@@ -92,3 +92,36 @@ describe('Stack, Queue and SinglyLinkedList', () => {
     expect(list.toArray()).toEqual(['a', 'c']);
   });
 });
+
+describe('DoublyLinkedList.moveNode', () => {
+  const move = (values: string[], from: number, to: number) => {
+    const list = buildList(...values);
+    expect(list.moveNode(list.getNode(from)!, to)).toBe(true);
+    return list;
+  };
+
+  it('moves a node from position 4 to the first position', () => {
+    const list = move(['a', 'b', 'c', 'd', 'e'], 3, 0);
+    expect(list.toArray()).toEqual(['d', 'a', 'b', 'c', 'e']);
+    expect(list.toReversedArray()).toEqual(['e', 'c', 'b', 'a', 'd']);
+    expect(list.getHead()?.value).toBe('d');
+  });
+
+  it('moves forward, to the middle and to the end keeping both directions consistent', () => {
+    expect(move(['a', 'b', 'c', 'd', 'e'], 1, 3).toArray()).toEqual(['a', 'c', 'd', 'b', 'e']);
+    const toEnd = move(['a', 'b', 'c'], 0, 2);
+    expect(toEnd.toArray()).toEqual(['b', 'c', 'a']);
+    expect(toEnd.toReversedArray()).toEqual(['a', 'c', 'b']);
+    expect(toEnd.getTail()?.value).toBe('a');
+    expect(toEnd.getSize()).toBe(3);
+  });
+
+  it('keeps node identity and validates the range', () => {
+    const list = buildList('a', 'b', 'c');
+    const node = list.getNode(2)!;
+    list.moveNode(node, 0);
+    expect(list.getHead()).toBe(node);
+    expect(() => list.moveNode(node, 3)).toThrow(RangeError);
+    expect(list.moveNode(node, 0)).toBe(true);
+  });
+});
