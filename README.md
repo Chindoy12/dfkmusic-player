@@ -111,6 +111,7 @@ Es la lista de reproducción. Cada nodo apunta al anterior y al siguiente, por l
 | Navegar | `next(node)` / `previous(node)` |
 | Vaciar, vacía, tamaño | `clear()` / `isEmpty()` / `getSize()` |
 | Ordenar | `sortAlphabetically()` / `sort()` |
+| Reubicar un nodo | `moveNode(node, index)` / `indexOf(node)` |
 
 `getNode(index)` recorre desde `head` o desde `tail`, según cuál esté más cerca. El ordenamiento es **merge sort sobre nodos** (estable, O(n log n)): reordena los enlaces y reconstruye los `previous`, por lo que los nodos conservan su identidad y el cursor de la playlist sigue siendo válido.
 
@@ -156,6 +157,7 @@ null ← [ A ] ⇄ [ B ] ⇄ [ C ] → null
 - **Insertar en el medio** (`insertAt`): se enlazan `previous` y `next` del nuevo nodo con sus vecinos y se actualizan los dos vecinos.
 - **Eliminar** (`unlink`): el anterior apunta al siguiente y el siguiente al anterior; si era `head` o `tail`, esos punteros se actualizan.
 - **Ordenar**: merge sort sobre los enlaces `next` y una pasada final que reconstruye `previous` y `tail`.
+- **Mover una canción** (`moveNode`): se desenlaza el nodo (`unlink`) y se vuelve a enlazar en la nueva posición (`linkBefore` o `linkAfterTail`). Es el mismo objeto nodo, no una copia, así que el cursor de la playlist y la canción que está sonando siguen siendo válidos. En la interfaz, el botón ⇅ de cada canción abre el formulario para elegir la posición.
 
 Abre **Estructura de la lista** en la barra lateral para ver los nodos, sus enlaces, `head`, `tail`, la canción actual y los recorridos en ambos sentidos. Las posiciones de inserción (inicio, final, posición N) se eligen en **Añadir música**.
 
